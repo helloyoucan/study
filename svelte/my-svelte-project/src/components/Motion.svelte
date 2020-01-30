@@ -1,0 +1,83 @@
+<script>
+  //   import { writable } from "svelte/store";
+  import { tweened, spring } from "svelte/motion";
+  import { cubicOut } from "svelte/easing";
+  //   const progress = writable(0);
+  /**
+   * tweened函数返回的值与writable一样，也可以通过set和update方法修改
+   */
+  const progress = tweened(0, {
+    duration: 400,
+    easing: cubicOut
+    //...
+  });
+  let coords = spring(
+    { x: 50, y: 50 },
+    {
+      stiffness: 0.1,
+      damping: 0.25
+    }
+  );
+  let size = spring(10);
+</script>
+
+<style>
+  progress {
+    display: block;
+    width: 100%;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+    margin: -8px;
+  }
+  circle {
+    fill: #ff3e00;
+  }
+</style>
+
+<h1>tweened和spring，用于补充DOM更新的过渡数值（类似css的translate）</h1>
+<h2>tweened</h2>
+<div>
+  <progress value={$progress} />
+  <button on:click={() => progress.set(0)}>0%</button>
+
+  <button on:click={() => progress.set(0.25)}>25%</button>
+
+  <button on:click={() => progress.set(0.5)}>50%</button>
+
+  <button on:click={() => progress.set(0.75)}>75%</button>
+
+  <button on:click={() => progress.set(1)}>100%</button>
+</div>
+<h2>对于频繁变化的值，用spring更好</h2>
+<div>
+  <div style="position: absolute; right: 1em;">
+    <label>
+      <h3>stiffness ({coords.stiffness})</h3>
+      <input
+        bind:value={coords.stiffness}
+        type="range"
+        min="0"
+        max="1"
+        step="0.01" />
+    </label>
+
+    <label>
+      <h3>damping ({coords.damping})</h3>
+      <input
+        bind:value={coords.damping}
+        type="range"
+        min="0"
+        max="1"
+        step="0.01" />
+    </label>
+  </div>
+
+  <svg
+    on:mousemove={e => coords.set({ x: e.clientX, y: e.clientY })}
+    on:mousedown={() => size.set(30)}
+    on:mouseup={() => size.set(10)}>
+    <circle cx={$coords.x} cy={$coords.y} r={$size} />
+  </svg>
+</div>
