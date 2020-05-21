@@ -32,14 +32,17 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ),
-          new Icon(Icons.star, color: Colors.red[500]),
-          new Text('55')
+          //new Icon(Icons.star, color: Colors.red[500]),
+          //new Text('55')
+          new FavoriteWidget()
         ],
       ),
     );
 
     Column buildButtonColumn(IconData icon, String label) {
-      Color color = Theme.of(context).primaryColor;
+      Color color = Theme
+          .of(context)
+          .primaryColor;
       return new Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -98,6 +101,47 @@ Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situate
           ],
         ),
       ),
+    );
+  }
+}
+
+class FavoriteWidget extends StatefulWidget {
+  _FavorteWidgetState createState() => new _FavorteWidgetState();
+}
+
+class _FavorteWidgetState extends State<FavoriteWidget> {
+  bool _isFavorited = true;
+  int _favoriteCount = 41;
+
+  void _toggleFavorite() {
+    setState(() {
+      if (_isFavorited) {
+        _favoriteCount -= 1;
+        _isFavorited = false;
+      } else {
+        _favoriteCount += 1;
+        _isFavorited = true;
+      }
+    });
+  }
+
+  Widget build(BuildContext context){
+    return new Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        new Container(
+          padding: new EdgeInsets.all(0.0),
+          child: new IconButton(
+              icon: (_isFavorited?new Icon(Icons.star):new Icon(Icons.star_border)),
+              color:Colors.red[500],
+              onPressed: _toggleFavorite
+          ),
+        ),
+        new SizedBox(
+          width: 18.0,
+          child: new Text('$_favoriteCount'),
+        )
+      ],
     );
   }
 }
