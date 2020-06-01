@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 void main() {
-  runApp(new MaterialApp(
-    title: 'My app', // used by the OS task switcher
-    home: new MyScaffold(),
-  ));
-//  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight
+  ]).then((_) {
+    runApp(new MaterialApp(
+      title: 'My app', // used by the OS task switcher
+      home: new MyScaffold(),
+    ));
+  }).catchError((onError){
+    print(onError);
+  });
 }
 
 /*class MyApp extends StatelessWidget {
