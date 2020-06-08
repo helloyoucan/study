@@ -12,10 +12,12 @@ class MyApp extends StatelessWidget {
         appBar: new AppBar(
           title:new Text('FlatButton 扁平按钮,FloatingActionButton,IconButton'),
         ),
-        body:Column(
+        body: ListView(
+          padding: EdgeInsets.all(20),
           children: <Widget>[
             FlatButton.icon(onPressed: (){}, color: Colors.red, icon: Icon(Icons.print), label: Text('231',style: TextStyle(color: Colors.black),),),
             FlatButton(
+              onPressed: (){},
               color: Colors.red,
               //colorBrightness: Brightness.dark,
               child: Text('大货里面'),
@@ -75,10 +77,75 @@ class MyApp extends StatelessWidget {
                 ),
                 child: IconButton(
                   icon: Icon(Icons.plus_one),
+                  // 根据父容器决定图标文章
+                  alignment:AlignmentDirectional.topStart,
+                  iconSize: 48,
+                  color: Colors.red,
+                  padding: EdgeInsets.only(
+                    bottom: 5,
+                    top: 9,
+                    left: 1,
+                    right: 5
+                  ),
+                  //点击效果
+                  splashColor: Colors.white,
+                  tooltip: '一个提示文本',
                   onPressed: (){
 
                   },
                 ),
+              ),
+            ),
+            OutlineButton(
+              child: Text('OutlineButton组件'),
+              color: Colors.red,
+              disabledBorderColor: Colors.red,
+              disabledTextColor: Colors.yellow,
+              splashColor: Colors.white,
+              textTheme: ButtonTextTheme.normal,
+              borderSide: BorderSide(color: Colors.orange,width: 2),
+              // 抗锯齿能力
+              clipBehavior: Clip.antiAlias,
+              padding: EdgeInsets.only(
+                  bottom: 5,
+                  top: 9,
+                  left: 1,
+                  right: 5
+              ),
+              shape: RoundedRectangleBorder(
+                side: new BorderSide(
+                  width: 2.0,
+                  color: Colors.white,
+                  style: BorderStyle.solid
+                ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular((22)),
+                  topRight: Radius.circular((2)),
+                  bottomLeft: Radius.circular((3)),
+                  bottomRight: Radius.circular((5)),
+                ),
+              ),
+              onPressed: (){},
+            ),
+            OutlineButton.icon(
+              onPressed: (){},
+              color: Colors.red,
+              icon: Icon(Icons.print),
+              label: Text('231',style: TextStyle(color: Colors.black),),
+            ),
+            RawMaterialButton(
+              onPressed: (){},
+              child: Text('RawMaterialButton'),
+              textStyle: TextStyle(color: Colors.red),
+              highlightColor: Colors.red,
+              splashColor: Colors.blue,
+              // 抗锯齿能力
+              clipBehavior: Clip.antiAlias,
+              padding:  EdgeInsets.only(
+                  bottom: 5,
+                  top: 9,
+                  left: 1,
+                  right: 5
               ),
             )
           ],
