@@ -1,4 +1,4 @@
-class KString{
+class KString {
   static const String mainTitle = 'Flutter女装商场';
   static const String homeTitle = '首页';
   static const String categoryTitle = '分类';
@@ -6,5 +6,5 @@ class KString{
   static const String memberTitle = '会员中心';
   static const String loading = '加载中...';
   static const String loadReadyText = '上拉加载';
-
+  static const String recommendText = '商品推荐';
 }

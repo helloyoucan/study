@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage>
   bool get wantKeepAlive => true;
 
   GlobalKey<RefreshFooterState> _footerKey =
-  new GlobalKey<RefreshFooterState>();
+      new GlobalKey<RefreshFooterState>();
 
   @override
   void initState() {
@@ -39,11 +39,11 @@ class _HomePageState extends State<HomePage>
             var data = json.decode(snapshot.data.toString());
             print(data);
             List<Map> swiperDataList =
-            (data['data']['slides'] as List).cast(); //轮播图
-            List<Map> navigatorList = (data['data']['category'] as List)
-                .cast(); //分类
+                (data['data']['slides'] as List).cast(); //轮播图
+            List<Map> navigatorList =
+                (data['data']['category'] as List).cast(); //分类
             List<Map> recommendList =
-            (data['data']['recommend'] as List).cast(); //商品推荐
+                (data['data']['recommend'] as List).cast(); //商品推荐
             List<Map> floor1 = (data['data']['floor1'] as List).cast(); //底部商品推荐
             Map fp1 = data['data']['floor1Pic']; //广告
             return EasyRefresh(
@@ -60,9 +60,8 @@ class _HomePageState extends State<HomePage>
               child: ListView(
                 children: <Widget>[
                   SwiperDiy(swiperDataList: swiperDataList),
-                  TopNavigator(
-                      navigatorList: navigatorList
-                  ),
+                  TopNavigator(navigatorList: navigatorList),
+                  RecommendUI(recommendList:recommendList)
                 ],
               ),
               loadMore: () async {
@@ -110,6 +109,7 @@ class SwiperDiy extends StatelessWidget {
     );
   }
 }
+
 // 分类导航1
 class TopNavigator extends StatelessWidget {
   final List navigatorList;
@@ -123,7 +123,10 @@ class TopNavigator extends StatelessWidget {
       },
       child: Column(
         children: <Widget>[
-          Image.network(item['image'], width: ScreenUtil().setWidth(95),),
+          Image.network(
+            item['image'],
+            width: ScreenUtil().setWidth(95),
+          ),
           Text(item['firstCategoryName'])
         ],
       ),
@@ -138,7 +141,7 @@ class TopNavigator extends StatelessWidget {
     var tempIndex = -1;
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.only(top:5.0),
+      margin: EdgeInsets.only(top: 5.0),
       height: ScreenUtil().setHeight(320),
       padding: EdgeInsets.all(3.0),
       child: GridView.count(
@@ -146,7 +149,7 @@ class TopNavigator extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         crossAxisCount: 5,
         padding: EdgeInsets.all(4.0),
-        children: navigatorList.map((item){
+        children: navigatorList.map((item) {
           tempIndex++;
           return _gridViewItemUI(context, item, tempIndex);
         }).toList(),
@@ -154,3 +157,89 @@ class TopNavigator extends StatelessWidget {
     );
   }
 }
+
+// 商品推荐
+class RecommendUI extends StatelessWidget {
+  final List recommendList;
+
+  RecommendUI({Key key, this.recommendList}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Column(
+        children: <Widget>[
+          _titleWidget(),
+          _recommedList(context)
+        ],
+      ),
+    );
+  }
+
+  // 商品推荐标题
+  Widget _titleWidget() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.fromLTRB(10, 2, 0, 5),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+              bottom:
+                  BorderSide(width: 0.5, color: KColor.defaultBorderColor))),
+      child: Text(
+        KString.recommendText,
+        style: TextStyle(color: KColor.homeSubTitleColor),
+      ),
+    );
+  }
+
+  //商品推荐列表
+  Widget _recommedList(BuildContext context) {
+    return Container(
+      height: ScreenUtil().setHeight(300),
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: recommendList.length,
+          itemBuilder: (context, index) {
+            return _item(index,context);
+          }),
+    );
+  }
+
+  Widget _item(index,context){
+
+    return InkWell(
+      onTap: (){
+
+      },
+      child: Container(
+        width: ScreenUtil().setWidth(280),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            left: BorderSide(width: 0.5,color: KColor.defaultBorderColor)
+          )
+        ),
+        child: Column(
+          children: <Widget>[
+            // 防止溢出
+            Expanded(
+              child: Image.network(recommendList[index]['image'],fit: BoxFit.fitHeight,),
+            ),
+            Text(
+              '￥${recommendList[index]['presentPrice']}',
+              style: TextStyle(color: KColor.presentPriceTextColor),
+            ),
+            Text(
+              '￥${recommendList[index]['oriPrice']}',
+              style:KFont.oriPriceStyle
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
