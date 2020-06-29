@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'pages/login_page.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -16,14 +17,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
-      title: '全屏',
-      home: Container(
-        decoration: BoxDecoration(color: Colors.white),
-        child: SafeArea(
-          child: Text('hello'),
-        ),
-      ),
+      home: LoginPage(),
     );
   }
 }
