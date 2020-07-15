@@ -1,7 +1,59 @@
-
-.normal {
+.message {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .8);
 }
 
-.title {
-  background: rgb(121, 242, 157);
+.layout {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(.9);
+  width: 976px;
+  height: 575px;
+}
+
+.car {
+  position: absolute;
+  width: 976px;
+  height: 575px;
+  left: 0;
+
+  &.go {
+    left: calc(50vw + 976px);
+    transition: left 0.7s ease-in 0.5s;
+  }
+}
+
+@keyframes out {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  20% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+
+
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+.arrow {
+  position: absolute;
+  width: 644px;
+  height: 421px;
+  margin-left: 313px;
+  margin-top: 372px;
+
+  &.hide {
+    animation: out 0.5s;
+    animation-fill-mode: forwards;
+  }
 }

@@ -4,7 +4,13 @@ import { InterfacePageProps } from '@/interface/index'
 import ClassPage from '../ClassPage'
 interface Props extends InterfacePageProps {
 }
+interface State {
+  isGo: boolean
+}
 export default class Message extends React.Component<Props> implements ClassPage {
+  state = {
+    isGo: false
+  }
   actived(): void {
 
   }
@@ -12,13 +18,22 @@ export default class Message extends React.Component<Props> implements ClassPage
 
   }
   onClick() {
-    this.props.next && this.props.next()
+    this.setState({
+      isGo: true
+    }, () => {
+      setTimeout(() => {
+        this.props.next && this.props.next()
+      }, 1500)
+    })
   }
   render() {
+    const { isGo } = this.state
     return (
       <div className={styles.message}>
-        Message
-        <button onClick={this.onClick.bind(this)}>next</button>
+        <div className={styles.layout}>
+          <img className={`${styles.car} ${isGo ? styles.go : ''}`} src={require('./assets/car.png')} />
+          <img onClick={this.onClick.bind(this)} className={`${styles.arrow} ${isGo ? styles.hide : ''}`} src={require('./assets/arrow.png')} />
+        </div>
       </div>
     )
   }

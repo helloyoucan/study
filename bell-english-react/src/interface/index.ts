@@ -10,7 +10,8 @@ export interface InterfacePage {
   stay?:number,
   autoSwitch?:boolean,
   bout?:number,
-  isWin?:boolean
+  isWin?:boolean,
+  hasBgColor?:boolean
 }
 export interface InterfacePageProps{
   page:InterfacePage,

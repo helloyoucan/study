@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../config/images.dart';
 import '../config/color.dart';
+import '../Widget/WButton.dart';
 
 class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
@@ -48,24 +49,83 @@ class _LoginPageState extends State<LoginPage> {
                           key: _formKey, //设置globalKey，用于后面获取FormState
                           autovalidate: true, // 开启自动校验
                           child: Column(children: <Widget>[
-                            TextFormField(
-                              autofocus: true,
-                              controller: new TextEditingController(),
-                              decoration: InputDecoration(
-                                  hintText: "手机号码", icon: Icon(Icons.person)),
-                              validator: (v) {
-                                return v.trim().length > 0 ? null : "用户名不能为空";
-                              },
+                            Stack(
+//                              alignment: FractionalOffset(-0.02, 0),
+                                children: <Widget>[
+                                  Positioned(
+                                    child: TextFormField(
+                                      controller: new TextEditingController(),
+                                      decoration: InputDecoration(
+                                          contentPadding:
+                                              EdgeInsets.only(left: 60),
+                                          hintText: "手机号码",
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: BColor.primaryColor)),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: BColor.primaryColor))),
+                                      maxLength: 11,
+                                      validator: (v) {
+                                        if (v.trim().length == 0) {
+                                          return "手机号不能为空";
+                                        }
+                                        if (v.trim().length != 11) {
+                                          return "请输入正确的手机号";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  Positioned(
+                                    child:
+                                        Image.asset('assets/images/phone.png'),
+                                  ),
+                                ]),
+                            Stack(
+                              children: <Widget>[
+                                Positioned(
+                                  child: TextFormField(
+                                    controller: new TextEditingController(),
+                                    decoration: InputDecoration(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 60),
+                                        hintText: "验证码",
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: BColor.primaryColor)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: BColor.primaryColor))),
+                                    validator: (v) {
+                                      return v.trim().length > 5
+                                          ? null
+                                          : "密码不能少于6位";
+                                    },
+                                  ),
+                                ),
+                                Positioned(
+                                  child: Image.asset('assets/images/vCode.png'),
+                                ),
+                                Positioned(
+                                    right: 0,
+                                    child: WButton(
+                                      onPressed: () {
+                                        // 通过_formKey.currentState 获取FormState后，
+                                        // 调用validate()方法校验用户名密码是否合法，校验
+                                        // 通过后再提交数据。
+                                        if (_formKey.currentState.validate()) {
+                                          //验证通过提交数据
+                                        }
+                                      },
+                                      text: '验证码',
+                                      width: 80,
+                                      height: 40,
+                                      radius: 20,
+                                    ))
+                              ],
                             ),
-                            TextFormField(
-                              autofocus: true,
-                              controller: new TextEditingController(),
-                              decoration: InputDecoration(
-                                  hintText: "验证码", icon: Icon(Icons.person)),
-                              validator: (v) {
-                                return v.trim().length > 5 ? null : "密码不能少于6位";
-                              },
-                            ),
+
                             // 登录按钮
 
                             Padding(
@@ -73,44 +133,54 @@ class _LoginPageState extends State<LoginPage> {
                               child: Row(
                                 children: <Widget>[
                                   Expanded(
-                                    child: Container(
-                                      height: 50.0,
-                                      child: RaisedButton(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(25.0))),
-                                        child: Text("登录",style: TextStyle(fontSize: 20,color: Colors.white),),
-                                        color: BColor.primaryColor,
-                                        textColor: Colors.white,
-                                        onPressed: () {
-                                          // 通过_formKey.currentState 获取FormState后，
-                                          // 调用validate()方法校验用户名密码是否合法，校验
-                                          // 通过后再提交数据。
-                                          if ((_formKey.currentState
-                                                  as FormState)
-                                              .validate()) {
-                                            //验证通过提交数据
-                                          }
-                                        },
-                                      ),
+                                    child: WButton(
+                                      onPressed: () {
+                                        // 通过_formKey.currentState 获取FormState后，
+                                        // 调用validate()方法校验用户名密码是否合法，校验
+                                        // 通过后再提交数据。
+                                        if (_formKey.currentState.validate()) {
+                                          //验证通过提交数据
+                                        }
+                                      },
+                                      text: '登录',
                                     ),
                                   )
                                 ],
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(top: 39,bottom: 26),
+                              padding: EdgeInsets.only(top: 39, bottom: 26),
                               child: Center(
                                 child: Row(
                                   children: <Widget>[
-                                    Text('登录代表同意',style: TextStyle(fontSize: 15,color: BColor.blackColor),),
-                                    Text('贝尔云课堂用户协议',style: TextStyle(fontSize: 15,color: BColor.primaryColor),),
-                                    Text('和',style: TextStyle(fontSize: 15,color: BColor.blackColor),),
-                                    Text('隐私协议',style: TextStyle(fontSize: 15,color: BColor.primaryColor),),
+                                    Text(
+                                      '登录代表同意',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: BColor.blackColor),
+                                    ),
+                                    Text(
+                                      '贝尔云课堂用户协议',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: BColor.primaryColor),
+                                    ),
+                                    Text(
+                                      '和',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: BColor.blackColor),
+                                    ),
+                                    Text(
+                                      '隐私协议',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: BColor.primaryColor),
+                                    ),
                                   ],
                                 ),
                               ),
-                              )
+                            )
                           ])))
                 ],
               ),

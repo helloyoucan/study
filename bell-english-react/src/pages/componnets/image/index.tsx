@@ -5,7 +5,13 @@ export default class Image extends ClassStaticPage {
   render() {
     const { page } = this.props
     return (
-      <img className={styles.image} src={page.url} />
+      <div
+        className={styles.image}
+        style={{
+          backgroundImage: `url(${page.url})`,
+          backgroundColor: `${page.hasBgColor ? '#000' : 'transparent'}`
+        }}>
+      </div>
     )
   }
 }

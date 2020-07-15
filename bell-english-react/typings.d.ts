@@ -6,3 +6,10 @@ declare module '*.svg' {
   const url: string
   export default url
 }
+interface Android {
+  todo(data: any): void
+}
+interface Window {
+  android: Android,
+  onNativeMessage(message: any): void
+}

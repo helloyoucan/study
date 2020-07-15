@@ -10,15 +10,17 @@ export default abstract class ClassVideoPage extends React.Component<Props> impl
     abstract getVideoRef(): React.RefObject<HTMLVideoElement>
     deactivated(): void {
         const _ref = this.getVideoRef()
-        if (_ref.current && _ref.current.pause&&_ref.current.paused) {
+        if (_ref.current && !_ref.current.paused && _ref.current.pause) {
             _ref.current.pause()
             _ref.current.currentTime = 0
         }
     }
     actived() {
         const _ref = this.getVideoRef()
-        if (_ref.current && _ref.current.play) {
-            _ref.current.play()
+        if (_ref.current && _ref.current.paused && _ref.current.play) {
+            _ref.current.play().catch(e => {
+                console.log('播放视频异常:' + e)
+            })
         }
     }
     onended() {

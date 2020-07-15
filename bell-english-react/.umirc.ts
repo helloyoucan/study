@@ -10,15 +10,18 @@ export default defineConfig({
   extraPostCSSPlugins: [
     //https://www.npmjs.com/package/postcss-plugin-px2rem
     px2rem({
-      rootValue: 100,
+      rootValue: 133.4,
       propBlackList: ['border', 'border-top', 'border-left', 'border-right', 'border-bottom', 'border-radius'],//这些属性不需要转换
       selectorBlackList: ['t_npx']//以包含t_npx的class不需要转换
     })
   ],
-  chainWebpack(memo, { env, webpack, createCSSRule }) {
+  devServer:{
+    port:8000
+  },
+  chainWebpack(memo, { env, webpack }) {
     memo.module
       .rule('media')
-      .test(/\.mp4$/)
+      .test(/\.mp(4|3)$/)
       .use('file-loader')
       .loader(require.resolve('file-loader'))
       .end()
