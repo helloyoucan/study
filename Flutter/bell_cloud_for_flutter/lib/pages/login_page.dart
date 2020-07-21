@@ -9,6 +9,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  var errorMsg = null;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.white,
               ),
               width: 460.0,
+              height: 500,
               padding: EdgeInsets.all(30.0),
               child: Column(
                 children: <Widget>[
@@ -49,82 +51,100 @@ class _LoginPageState extends State<LoginPage> {
                           key: _formKey, //设置globalKey，用于后面获取FormState
                           autovalidate: true, // 开启自动校验
                           child: Column(children: <Widget>[
-                            Stack(
+                            Padding(
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
+                              child: Stack(
 //                              alignment: FractionalOffset(-0.02, 0),
-                                children: <Widget>[
+                                  children: <Widget>[
+                                    Positioned(
+                                      child: TextFormField(
+                                        controller: new TextEditingController(),
+                                        decoration: InputDecoration(
+                                            counterText: '',
+                                            //隐藏maxLength提示的数字
+                                            contentPadding:
+                                                EdgeInsets.only(left: 60),
+                                            hintText: "手机号码",
+                                            errorStyle: TextStyle(),
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color:
+                                                        BColor.primaryColor)),
+                                            focusedBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color:
+                                                        BColor.primaryColor))),
+                                        maxLength: 11,
+                                        validator: (v) {
+                                          if (v.trim().length == 0) {
+                                            setState(() {
+//                                            errorMsg=Text("手机号不能为空");
+                                            });
+                                          }
+                                          if (v.trim().length != 11) {
+                                            setState(() {
+//                                            errorMsg=Text("请输入正确的手机号");
+                                            });
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                    Positioned(
+                                      child: Image.asset(
+                                          'assets/images/phone.png'),
+                                    ),
+                                  ]),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(top: 10, bottom: 10),
+                                child: Stack(children: <Widget>[
                                   Positioned(
                                     child: TextFormField(
                                       controller: new TextEditingController(),
                                       decoration: InputDecoration(
                                           contentPadding:
                                               EdgeInsets.only(left: 60),
-                                          hintText: "手机号码",
+                                          hintText: "验证码",
                                           enabledBorder: UnderlineInputBorder(
                                               borderSide: BorderSide(
                                                   color: BColor.primaryColor)),
                                           focusedBorder: UnderlineInputBorder(
                                               borderSide: BorderSide(
                                                   color: BColor.primaryColor))),
-                                      maxLength: 11,
                                       validator: (v) {
-                                        if (v.trim().length == 0) {
-                                          return "手机号不能为空";
+                                        if (v.trim().length <= 6) {
+                                          setState(() {
+//                                          errorMsg=Text("密码不能少于6位");
+                                          });
                                         }
-                                        if (v.trim().length != 11) {
-                                          return "请输入正确的手机号";
-                                        }
+
                                         return null;
                                       },
                                     ),
                                   ),
                                   Positioned(
                                     child:
-                                        Image.asset('assets/images/phone.png'),
+                                        Image.asset('assets/images/vCode.png'),
                                   ),
-                                ]),
-                            Stack(
-                              children: <Widget>[
-                                Positioned(
-                                  child: TextFormField(
-                                    controller: new TextEditingController(),
-                                    decoration: InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.only(left: 60),
-                                        hintText: "验证码",
-                                        enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: BColor.primaryColor)),
-                                        focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: BColor.primaryColor))),
-                                    validator: (v) {
-                                      return v.trim().length > 5
-                                          ? null
-                                          : "密码不能少于6位";
-                                    },
-                                  ),
-                                ),
-                                Positioned(
-                                  child: Image.asset('assets/images/vCode.png'),
-                                ),
-                                Positioned(
-                                    right: 0,
-                                    child: WButton(
-                                      onPressed: () {
-                                        // 通过_formKey.currentState 获取FormState后，
-                                        // 调用validate()方法校验用户名密码是否合法，校验
-                                        // 通过后再提交数据。
-                                        if (_formKey.currentState.validate()) {
-                                          //验证通过提交数据
-                                        }
-                                      },
-                                      text: '验证码',
-                                      width: 80,
-                                      height: 40,
-                                      radius: 20,
-                                    ))
-                              ],
-                            ),
+                                  Positioned(
+                                      right: 0,
+                                      child: WButton(
+                                        onPressed: () {
+                                          // 通过_formKey.currentState 获取FormState后，
+                                          // 调用validate()方法校验用户名密码是否合法，校验
+                                          // 通过后再提交数据。
+                                          if (_formKey.currentState
+                                              .validate()) {
+                                            //验证通过提交数据
+                                          }
+                                        },
+                                        text: '验证码',
+                                        width: 100,
+                                        height: 40,
+                                        radius: 20,
+                                      ))
+                                ])),
 
                             // 登录按钮
 
