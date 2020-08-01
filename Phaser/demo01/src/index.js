@@ -29,7 +29,11 @@ function preload() {
 var platforms;
 var player;
 var cursors;
-var satr;
+var stars;
+var score = 0;// 实际得分
+var scoreText; //文本对象本身
+var bombs; //炸弹组
+var gameOver;
 function create() {
   this.add.image(400, 300, 'sky');
   platforms = this.physics.add.staticGroup(); // 生成静态物理组
@@ -68,23 +72,74 @@ function create() {
   cursors = this.input.keyboard.createCursorKeys();
 
   // 动态物理的星星
+  stars = this.physics.add.group({
+    key: 'star',
+    repeat: 11, //生成11个子项，加上自己共12个
+    setXY: { x: 12, y: 0, stepX: 70 }//每个相隔70的距离
+  })
+  stars.children.iterate(function (child) {
+    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+  });
+  this.physics.add.collider(stars, platforms);//与平台碰撞
+  // 检测玩家是否与星星重叠
+  this.physics.add.overlap(player, stars, collectStar, null, this);//检测玩家与组中的任何一个星星的重叠，如果检测到，就会传递collectStar函数
 
+  //创建文本对象
+  scoreText = this.add.text(16, 16, 'score:0', { fontSize: '32px', fill: '#000' });
+
+  // 创建炸弹组
+  bombs = this.physics.add.group();
+  this.physics.add.collider(bombs, platforms);//地面碰撞
+  this.physics.add.collider(player, bombs, hitBomb, null, this);
 }
 
 function update() {
   if (cursors.left.isDown) {
     player.setVelocityX(-160);//水平速度
     player.anims.play('left', true);
-  }
-   else if (cursors.right.isDown) {
+  } else if (cursors.right.isDown) {
     player.setVelocityX(160);
     player.anims.play('right', true);
-  }
-   else {
+  } else {
     player.setVelocityX(0);
     player.anims.play('turn');
   }
   if (cursors.up.isDown && player.body.touching.down) {//是否按下up键&&是否与地面接触
     player.setVelocityY(-330);//垂直速度
   }
+}
+/**
+ * 设置星星不可见
+ * @param {*} player 
+ * @param {*} star 
+ */
+function collectStar(player, star) {
+  star.disableBody(true, true);
+  // 分数增加
+  score += 10;
+  // 更新显示的文本
+  scoreText.setText('Score:' + score);
+
+  if (stars.countActive(true) === 0) {
+    stars.children.iterate(function (child) {
+      child.enableBody(true, child.x, 0, true, true);
+    });
+    var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+    var bomb = bombs.create(x, 16, 'bomb');
+    bomb.setBounce(1);
+    bomb.setCollideWorldBounds(true);
+    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+  }
+}
+/**
+ * 碰到炸弹，停止游戏，玩家变红色
+ * @param {*} player 
+ * @param {*} bomb 
+ */
+function hitBomb(player, bomb) {
+  this.physics.pause();
+  player.setTint(0xff0000);
+  player.anims.play('turn');
+  gameOver = true;
 }
