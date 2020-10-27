@@ -14,8 +14,8 @@ import io.flutter.embedding.android.FlutterFragment;
 public class MainActivity extends AppCompatActivity {
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
