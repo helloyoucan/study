@@ -1,8 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MyApp(initParams: window.defaultRouteName));
 
 class MyApp extends StatelessWidget {
+  final String initParams;
+
+  const MyApp({Key key, this.initParams}) : super(key: key);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -19,13 +24,13 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter 混合开发', initParams: this.initParams),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title, this.initParams}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -37,6 +42,7 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
+  final String initParams;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -90,6 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'initParams:${widget.initParams}',
+              style: TextStyle(fontSize: 20),
+            ),
             Text(
               'You have pushed the button this many times:',
             ),
