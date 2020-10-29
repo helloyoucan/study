@@ -2,8 +2,11 @@ package com.helloyoucan.flutterhybridandroid;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.View;
 import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.android.FlutterFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
 //                FlutterFragment fragment = FlutterFragment.withNewEngine().initialRoute("{name:'devio',dataList:['aa','bb','cc']}").build();
 //                tx.replace(R.id.someContainer, fragment);
 //                tx.commit();
+                // 使用FlutterEngineCache
+                FragmentTransaction tx  = getSupportFragmentManager().beginTransaction();
+                FlutterFragment fragment = FlutterFragment.withCachedEngine("my_engine_id").build();
+                tx.replace(R.id.someContainer, fragment);
+                tx.commit();
                 /**
                  * 方式二
                  */
@@ -33,11 +41,11 @@ public class MainActivity extends AppCompatActivity {
                 /**
                  * 使用FlutterEngineCache
                  */
-                startActivity(
-                        FlutterActivity
-                                .withCachedEngine("my_engine_id")
-                                .build(MainActivity.this)
-                );
+//                startActivity(
+//                        FlutterActivity
+//                                .withCachedEngine("my_engine_id")
+//                                .build(MainActivity.this)
+//                );
             }
         });
     }
