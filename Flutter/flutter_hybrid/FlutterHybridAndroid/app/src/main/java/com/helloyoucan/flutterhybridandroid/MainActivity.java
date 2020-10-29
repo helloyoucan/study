@@ -1,17 +1,9 @@
 package com.helloyoucan.flutterhybridandroid;
-
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
-import android.widget.FrameLayout;
-
-import io.flutter.embedding.android.FlutterView;
-import io.flutter.embedding.engine.FlutterEngine;
-import io.flutter.embedding.engine.dart.DartExecutor;
-import io.flutter.embedding.engine.renderer.FlutterUiDisplayListener;
+import io.flutter.embedding.android.FlutterActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,26 +25,19 @@ public class MainActivity extends AppCompatActivity {
                 /**
                  * 方式二
                  */
-                FlutterView flutterView = new FlutterView(MainActivity.this);
+                // 启动在AndroidManifest.xml中注册FlutterActivity
+//                startActivity( FlutterActivity.createDefaultIntent(MainActivity.this));
+                // 启动FlutterActivity并打开"/"路由
+//                startActivity(FlutterActivity.withNewEngine().initialRoute("/").build(MainActivity.this));
 
-                flutterView.addOnFirstFrameRenderedListener(new FlutterUiDisplayListener(){
-
-                    @Override
-                    public void onFlutterUiDisplayed() {
-
-                    }
-
-                    @Override
-                    public void onFlutterUiNoLongerDisplayed() {
-
-                    }
-                });
-                FlutterEngine flutterEngine = new FlutterEngine(MainActivity.this);
-                flutterView.attachToFlutterEngine(flutterEngine);
-                flutterEngine.getNavigationChannel().setInitialRoute("/");
-                flutterEngine.getDartExecutor().executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault());
-                FrameLayout frameLayout=findViewById(R.id.someContainer);
-                frameLayout.addView(flutterView);
+                /**
+                 * 使用FlutterEngineCache
+                 */
+                startActivity(
+                        FlutterActivity
+                                .withCachedEngine("my_engine_id")
+                                .build(MainActivity.this)
+                );
             }
         });
     }
