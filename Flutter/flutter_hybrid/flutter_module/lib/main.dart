@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp(initParams: window.defaultRouteName));
 
@@ -53,8 +55,60 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String showMessage = '';
+  static const BasicMessageChannel _basicMessageChannel =
+      const BasicMessageChannel('BasicMessageChannelPlugin',
+          StringCodec()); //StringCodec()意思是发送String类型的消息
+  static const EventChannel _eventChannelPlugin =
+      EventChannel('EventChannelPlugin');
+  StreamSubscription _streamSubscription;
+  void initState() {
+    _streamSubscription = _eventChannelPlugin
+        .receiveBroadcastStream()
+        .listen(_onToDart, onError: _onToDartError);
+    super.initState();
+  }
+
+  void _onToDart(message) {
+    setState(() {
+      showMessage = message;
+    });
+  }
+
+  void _onToDartError(error) {
+    print(error);
+  }
+
+  @override
+  void dispose() {
+    if (_streamSubscription != null) {
+      _streamSubscription.cancel();
+      _streamSubscription = null;
+    }
+    super.dispose();
+  }
+
+  _MyHomePageState() {
+    // 使用BasicMessageChannel接受来自Native的消息，并向Native回复
+    _basicMessageChannel.setMessageHandler((message) => Future<String>(() {
+          setState(() {
+            showMessage = message;
+          });
+          return "收到Native的消息：" + message;
+        }));
+  }
+  Future<void> sendMessageToNative() async {
+    //使用BasicMessageChannel向Native发送消息，并接受Native的回复
+    String response;
+    try {
+      response = await _basicMessageChannel.send("Flutter发出的1消息");
+    } catch (e) {
+      print(e);
+    }
+  }
 
   void _incrementCounter() {
+    sendMessageToNative();
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -99,6 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(showMessage),
             Text(
               'initParams:${widget.initParams}',
               style: TextStyle(fontSize: 20),
