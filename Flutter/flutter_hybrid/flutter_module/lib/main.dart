@@ -59,9 +59,21 @@ class _MyHomePageState extends State<MyHomePage> {
   static const BasicMessageChannel _basicMessageChannel =
       const BasicMessageChannel('BasicMessageChannelPlugin',
           StringCodec()); //StringCodec()意思是发送String类型的消息
+
+  static const MethodChannel _methodChannelPlugin = const MethodChannel('methodChannelPlugin');
   static const EventChannel _eventChannelPlugin =
       EventChannel('EventChannelPlugin');
+
   StreamSubscription _streamSubscription;
+
+  Future<void> sendOnceMessageToNative() async {
+    String response;
+    try{
+      response = await _methodChannelPlugin.invokeMethod('send','test message');
+    }on PlatformException catch(e){
+      print(e);
+    }
+  }
   void initState() {
     _streamSubscription = _eventChannelPlugin
         .receiveBroadcastStream()
