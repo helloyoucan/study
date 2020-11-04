@@ -38,11 +38,11 @@ class GridNavItem {
     return GridNavItem(
       startColor: json['startColor'],
       endColor: json['endColor'],
-      mainItem: json['mainItem'],
-      item1: json['item1'],
-      item2: json['item2'],
-      item3: json['item3'],
-      item4: json['item4'],
+      mainItem: CommonModel.formJson(json['mainItem']),
+      item1: CommonModel.formJson(json['item1']),
+      item2: CommonModel.formJson(json['item2']),
+      item3: CommonModel.formJson(json['item3']),
+      item4: CommonModel.formJson(json['item4']),
     );
   }
 }
