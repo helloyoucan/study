@@ -1,12 +1,15 @@
 class ConfigModel {
-  final String searchUrl;
+  String searchUrl;
 
-  ConfigModel({this.searchUrl}); //用大括号，表示可选
+  ConfigModel({this.searchUrl});//用大括号，表示可选
 
-  factory ConfigModel.formJson(Map<String, dynamic> json) {
-    return ConfigModel(searchUrl: json['searchUrl']);
+  ConfigModel.fromJson(Map<String, dynamic> json) {
+    searchUrl = json['searchUrl'];
   }
+
   Map<String, dynamic> toJson() {
-    return {searchUrl: searchUrl};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['searchUrl'] = this.searchUrl;
+    return data;
   }
 }
