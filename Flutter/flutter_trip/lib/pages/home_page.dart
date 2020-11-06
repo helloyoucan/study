@@ -4,6 +4,7 @@ import 'package:flutter_trip/dao/home_dao.dart';
 import 'dart:convert';
 
 import 'package:flutter_trip/model/home_model.dart';
+import 'package:flutter_trip/widget/grid_nav.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
 
@@ -102,6 +103,7 @@ class _HomePage extends State<HomePage> {
                       pagination: SwiperPagination(),
                     ),
                   ),
+                  GridNav(gridNavModel: null, name: '哈哈'),
                   Container(
                     height: 800,
                     child: ListTile(
