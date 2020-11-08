@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip/model/common_model.dart';
-import 'package:flutter_trip/model/grid_nav_model.dart';
 
 class LocalNav extends StatelessWidget {
   final List<CommonModel> localNavList;
@@ -24,11 +23,11 @@ class LocalNav extends StatelessWidget {
   Widget _items(BuildContext context) {
     if (localNavList == null) return null;
     List<Widget> items = [];
-    localNavList.map((model) {
+    localNavList.forEach((model) {
       items.add(_item(context, model));
     });
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: items,
     );
   }
