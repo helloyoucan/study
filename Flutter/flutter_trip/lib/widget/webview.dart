@@ -60,14 +60,72 @@ class _WebViewState extends State<WebView> {
 
   @override
   Widget build(BuildContext context) {
+    String statusBarColorStr = widget.statusBarColor ?? 'ffffff';
+    Color backButtonColor;
+    if (statusBarColorStr == 'ffffff') {
+      backButtonColor = Colors.black;
+    } else {
+      backButtonColor = Colors.white;
+    }
     return Scaffold(
       body: Column(
         children: <Widget>[
-          _appBar(null, null),
+          _appBar(
+              Color(int.parse('0xff' + statusBarColorStr)), backButtonColor),
+          Expanded(
+            child: WebviewScaffold(
+              url: widget.url,
+              withZoom: true,
+              withLocalStorage: true,
+              hidden: true,
+              initialChild: Container(
+                color: Colors.white,
+                child: Center(
+                  child: Text('Waiting...'),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  _appBar(Color backgroundColor, Color backButtonColor) {}
+  _appBar(Color backgroundColor, Color backButtonColor) {
+    if (widget.hideAppBar ?? false) {
+      return Container(
+        color: backgroundColor,
+        height: 30,
+      );
+    }
+    return Container(
+      child: FractionallySizedBox(
+        widthFactor: 1, //撑满布局
+        child: Stack(
+          children: [
+            GestureDetector(
+              child: Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Icon(
+                  Icons.close,
+                  color: backButtonColor,
+                  size: 26,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Text(
+                  widget.title ?? '',
+                  style: TextStyle(color: backButtonColor, fontSize: 20),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
