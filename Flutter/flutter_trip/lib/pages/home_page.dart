@@ -68,7 +68,7 @@ class _HomePage extends State<HomePage> {
     try {
       HomeModel model = await HomeDao.fetch();
       setState(() {
-        resultString = json.encode(model.config);
+        localNavList = model.localNavList;
         _loading = false;
       });
     } catch (e) {
