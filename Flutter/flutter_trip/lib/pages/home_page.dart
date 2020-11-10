@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_trip/dao/home_dao.dart';
@@ -29,6 +27,7 @@ class _HomePage extends State<HomePage> {
   GridNavModel gridNavModel;
   SalesBoxModel salesBoxModel;
   List<CommonModel> localNavList = [];
+  GridNavModel gridNav;
   bool _loading = true;
   @override
   void initState() {
@@ -69,6 +68,7 @@ class _HomePage extends State<HomePage> {
       HomeModel model = await HomeDao.fetch();
       setState(() {
         localNavList = model.localNavList;
+        gridNav = model.gridNav;
         _loading = false;
       });
     } catch (e) {
@@ -122,7 +122,7 @@ class _HomePage extends State<HomePage> {
                           localNavList: localNavList,
                         ),
                       ),
-                      GridNav(gridNavModel: null),
+                      GridNav(gridNavModel: gridNav),
                       Container(
                         height: 800,
                         child: ListTile(
