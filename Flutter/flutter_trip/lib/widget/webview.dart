@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
+const CATCH_URLS = ['m.ctrip.com/', 'm.ctrip.com/html5/', 'm.ctrip.com/html5'];
+
 class WebView extends StatefulWidget {
   final String url;
   final String statusBarColor;
@@ -16,7 +18,7 @@ class WebView extends StatefulWidget {
       this.statusBarColor,
       this.title,
       this.hideAppBar,
-      this.backForbid})
+      this.backForbid = false})
       : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class _WebViewState extends State<WebView> {
   StreamSubscription<String> _onUrlChanged;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
   StreamSubscription<WebViewHttpError> _onHttpError;
+  bool exiting = false;
   @override
   void initState() {
     super.initState();
@@ -37,6 +40,14 @@ class _WebViewState extends State<WebView> {
         webviewReference.onStateChanged.listen((WebViewStateChanged state) {
       switch (state.type) {
         case WebViewState.startLoad:
+          if (_isToMain(state.url) && !exiting) {
+            if (widget.backForbid) {
+              webviewReference.launch(widget.url);
+            } else {
+              Navigator.pop(context);
+              exiting = true;
+            }
+          }
           break;
         default:
           break;
@@ -47,6 +58,16 @@ class _WebViewState extends State<WebView> {
         webviewReference.onHttpError.listen((WebViewHttpError error) {
       print(error);
     });
+  }
+
+  _isToMain(String url) {
+    bool contain = false;
+    for (final value in CATCH_URLS) {
+      if (url?.endsWith(value) ?? false) {
+        contain = true;
+      }
+    }
+    return contain;
   }
 
   @override
@@ -98,6 +119,7 @@ class _WebViewState extends State<WebView> {
         height: 30,
       );
     }
+    print(widget);
     return Container(
       child: FractionallySizedBox(
         widthFactor: 1, //撑满布局

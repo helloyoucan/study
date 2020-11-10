@@ -122,7 +122,7 @@ class _HomePage extends State<HomePage> {
                           localNavList: localNavList,
                         ),
                       ),
-                      GridNav(gridNavModel: null, name: '哈哈'),
+                      GridNav(gridNavModel: null),
                       Container(
                         height: 800,
                         child: ListTile(
