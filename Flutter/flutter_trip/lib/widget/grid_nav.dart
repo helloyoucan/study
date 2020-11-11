@@ -10,8 +10,13 @@ class GridNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: _gridNavItems(context),
+    return PhysicalModel(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(6),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: _gridNavItems(context),
+      ),
     );
   }
 
@@ -22,10 +27,10 @@ class GridNav extends StatelessWidget {
       items.add(_gridNavItem(context, gridNavModel.hotel, true));
     }
     if (gridNavModel.flight != null) {
-      items.add(_gridNavItem(context, gridNavModel.flight, true));
+      items.add(_gridNavItem(context, gridNavModel.flight, false));
     }
     if (gridNavModel.travel != null) {
-      items.add(_gridNavItem(context, gridNavModel.travel, true));
+      items.add(_gridNavItem(context, gridNavModel.travel, false));
     }
     return items;
   }
@@ -61,6 +66,7 @@ class GridNav extends StatelessWidget {
     return _wrapGesture(
         context,
         Stack(
+          alignment: AlignmentDirectional.topCenter,
           children: <Widget>[
             Image.network(
               model.icon,
@@ -69,9 +75,12 @@ class GridNav extends StatelessWidget {
               width: 121,
               alignment: AlignmentDirectional.bottomEnd,
             ),
-            Text(
-              model.title,
-              style: TextStyle(fontSize: 14, color: Colors.white),
+            Container(
+              margin: EdgeInsets.only(top: 11),
+              child: Text(
+                model.title,
+                style: TextStyle(fontSize: 14, color: Colors.white),
+              ),
             )
           ],
         ),
