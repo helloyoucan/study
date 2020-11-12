@@ -129,7 +129,7 @@ class _SearchPage extends State<SearchPage> {
               child: Image(
                 height: 26,
                 width: 26,
-                // image: AssetsImage(_typeImage(item.type)),
+                image: AssetImage(_typeImage(item.type)),
               ),
             ),
             Column(
