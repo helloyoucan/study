@@ -19,7 +19,7 @@ class HomeModel {
       this.gridNav,
       this.salesBox});
 
-  factory HomeModel.formJson(Map<String, dynamic> json) {
+  factory HomeModel.fromJson(Map<String, dynamic> json) {
     var bannerListJson = json['bannerList'] as List;
     List<CommonModel> bannerList =
         bannerListJson.map((i) => CommonModel.fromJson(i)).toList();
