@@ -4,6 +4,22 @@ import 'package:flutter_trip/model/search_model.dart';
 import 'package:flutter_trip/widget/search_bar.dart';
 import 'package:flutter_trip/widget/webview.dart';
 
+const TYPES = [
+  'channelgroup',
+  'gs',
+  'plane',
+  'train',
+  'cruise',
+  'district',
+  'food ',
+  'hotel',
+  'huodong ',
+  'shop',
+  'sight',
+  'ticket',
+  'travelgroup'
+];
+
 const URL =
     "https://m.ctrip.com/restapi/h5api/searchapp/search?source=mobileweb&action=autocomplete&contentType=json&keyword=";
 
@@ -136,12 +152,12 @@ class _SearchPage extends State<SearchPage> {
               children: <Widget>[
                 Container(
                   width: 300,
-                  child: Text(
-                      '${item.word} ${item.districtname ?? ''} ${item.zanename ?? ''}'),
+                  child: _title(item),
                 ),
                 Container(
+                  margin: EdgeInsets.only(top: 5),
                   width: 300,
-                  child: Text('${item.price ?? ''} ${item.type ?? ''}'),
+                  child: _subTitle(item),
                 ),
               ],
             ),
@@ -151,7 +167,61 @@ class _SearchPage extends State<SearchPage> {
     );
   }
 
-  _typeImage(String type) {}
-}
+  _typeImage(String type) {
+    if (type == null) return 'assets/images/type_travelgroup.png';
+    String path = 'travelgroup';
+    for (final val in TYPES) {
+      if (type.contains(val)) {
+        path = val;
+        break;
+      }
+    }
+    return 'assets/images/type_$path.png';
+  }
 
-class AssetsImage {}
+  _title(SearchItem item) {
+    if (item == null) return null;
+    List<TextSpan> spans = [];
+    spans.addAll(_keywordTextSpans(item.word, searchModel.keyword));
+    spans.add(
+      TextSpan(
+        text: ' ' + (item.districtname ?? '') + ' ' + (item.zanename ?? ''),
+        style: TextStyle(fontSize: 16, color: Colors.grey),
+      ),
+    );
+    return RichText(text: TextSpan(children: spans));
+  }
+
+  _subTitle(SearchItem item) {
+    return RichText(
+      text: TextSpan(children: <TextSpan>[
+        TextSpan(
+          text: item.price ?? '',
+          style: TextStyle(fontSize: 16, color: Colors.orange),
+        ),
+        TextSpan(
+          text: ' ' + (item.star ?? ''),
+          style: TextStyle(fontSize: 12, color: Colors.grey),
+        )
+      ]),
+    );
+  }
+
+  _keywordTextSpans(String word, String keyword) {
+    List<TextSpan> spans = [];
+    if (word == null || word.length == 0) return spans;
+    List<String> arr = word.split(keyword);
+    TextStyle normalStyle = TextStyle(fontSize: 16, color: Colors.black87);
+    TextStyle keyWordStyle = TextStyle(fontSize: 16, color: Colors.orange);
+    for (int i = 0; i < arr.length; i++) {
+      if ((i + 1) % 2 == 0) {
+        spans.add(TextSpan(text: keyword, style: keyWordStyle));
+      }
+      String val = arr[i];
+      if (val != null && val.length > 0) {
+        spans.add(TextSpan(text: val, style: normalStyle));
+      }
+    }
+    return spans;
+  }
+}
