@@ -6,6 +6,7 @@ import 'package:flutter_trip/model/grid_nav_model.dart';
 import 'package:flutter_trip/model/home_model.dart';
 import 'package:flutter_trip/model/sales_box_model.dart';
 import 'package:flutter_trip/pages/search_page.dart';
+import 'package:flutter_trip/util/navigator_util.dart';
 import 'package:flutter_trip/widget/grid_nav.dart';
 import 'package:flutter_trip/widget/loading_container.dart';
 import 'package:flutter_trip/widget/local_nav.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_trip/widget/sales_box.dart';
 import 'package:flutter_trip/widget/search_bar.dart';
 import 'package:flutter_trip/widget/sub_nav.dart';
 import 'package:flutter_trip/widget/webview.dart';
+import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
 const SEARCH_BAR_DEFAULT_TEXT = '网红打卡地 景点 酒店 美食';
@@ -35,6 +37,9 @@ class _HomePage extends State<HomePage> {
   void initState() {
     super.initState();
     _handleRefresh();
+    Future.delayed(Duration(microseconds: 600), () {
+      FlutterSplashScreen.hide();
+    });
   }
 
   _onScroll(offset) {
@@ -213,17 +218,13 @@ class _HomePage extends State<HomePage> {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(
+              CommonModel model = bannerList[index];
+              NavigatorUtil.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    CommonModel model = bannerList[index];
-                    return WebView(
-                      url: model.url,
-                      statusBarColor: model.statusBarColor,
-                      hideAppBar: model.hideAppBar,
-                    );
-                  },
+                WebView(
+                  url: model.url,
+                  statusBarColor: model.statusBarColor,
+                  hideAppBar: model.hideAppBar,
                 ),
               );
             },
@@ -239,12 +240,11 @@ class _HomePage extends State<HomePage> {
   }
 
   _jumpToSearch() {
-    Navigator.push(
+    NavigatorUtil.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => SearchPage(
-                hint: SEARCH_BAR_DEFAULT_TEXT,
-              )),
+      SearchPage(
+        hint: SEARCH_BAR_DEFAULT_TEXT,
+      ),
     );
   }
 
