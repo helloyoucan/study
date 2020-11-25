@@ -1,27 +1,45 @@
 <template>
-  <h1>{{ msg }}</h1>
-  <button @click="count++">count is: {{ count }}</button>
-  <p>Edit <code>components/HelloWorld.vue</code> to test hot module replacement.</p>
+  <p>counter:{{ counter }}</p>
 </template>
 
 <script>
+import { ref, onMounted, watch,computed  } from 'vue';
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
-  data() {
+  setup(props) {
+    console.log('props:', props);
+    const counter = ref(0);
+    console.log('counter:', counter);
+    console.log('counter.value:', counter.value);
+    const countFn = () => {
+      // setInterval(() => {
+        counter.value++;
+      // }, 1000)
+    }
+    onMounted(() => {
+      console.log('setup onMounted')
+    });
+    const twiceTheCounter = computed(() => counter.value * 2)
+
+    watch(counter, (newValue, oldValue) => {
+      console.log('The new counter value is: ' + counter.value)
+      console.log('twiceTheCounter:',twiceTheCounter);
+    });
     return {
-      count: 0
+      sayHello: () => console.log('hello vue3'),
+      countFn,
+      counter
     }
   },
-  watch:{
-    count:'countUpdate'
-  },
-  methods:{
-    countUpdate(){
-      console.log(this.count)
-    }
+  created() {
+    this.sayHello();
+    this.countFn();
+    // setInterval(() => {
+      console.log('this.counter:', this.counter)
+    // }, 1000)
   }
 }
 </script>

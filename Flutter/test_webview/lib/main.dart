@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight
-  ]).then((_) {
+  SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
+      .then((_) {
     runApp(MyApp());
-  }).catchError((onError){
+  }).catchError((onError) {
     print(onError);
   });
 }
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         height: double.infinity,
         //https://www.jianshu.com/p/4aabe453eb26
         child: WebView(
-          initialUrl: "http://192.168.10.41:81/",
+          initialUrl: "http://192.168.1.208:8000/",
           //JS执行模式 是否允许JS执行
           javascriptMode: JavascriptMode.unrestricted,
         ),
