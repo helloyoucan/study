@@ -1,18 +1,31 @@
 package main
+
 import (
-	"fmt"
-	"io/ioutil"
+	"github.com/gin-gonic/gin"
 	"net/http"
 )
-func sayHello(w http.ResponseWriter,r *http.Request){
-	b,_ :=ioutil.ReadFile("./hello.txt")
-	_,_ = fmt.Fprintf(w,string(b))
-}
+
 func main() {
-	http.HandleFunc("/hello",sayHello)
-	err := http.ListenAndServe(":9090",nil) //nil是空值
-	if err != nil{
-		fmt.Printf("http server failed. err%v\n",err)
-		return
-	}
+	r := gin.Default()
+	r.LoadHTMLGlob("templates/**/*")
+	//r.LoadHTMLGlob("templates/hello.html")
+	//r.LoadHTMLFiles("templates/posts/index.html", "templates/users/index.html")
+	r.GET("/posts/index", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "posts/index.html", gin.H{
+			"title": "posts/index 1111",
+		})
+	})
+
+	r.GET("users/index", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "users/index.html", gin.H{
+			"title": "users/index",
+		})
+	})
+	r.GET("/hello", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "aaa", gin.H{
+			"title": "hello",
+		})
+	})
+
+	r.Run(":9090")
 }

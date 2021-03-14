@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1>测试嵌套模板</h1>
+<hr>
+<!--嵌套一个单独的模板文件-->
+{{template "ul.tmpl"}}
+<hr>
+<!--嵌套define定义的模板-->
+{{template "ol.tmpl"}}
+<p>你好{{.}}</p>
+</body>
+</html>
+<!--通过define定义一个模板-->
+{{define "ol.tmpl"}}
+<ol>
+
+    <li>吃饭</li>
+    <li>睡觉</li>
+    <li>打游戏</li>
+</ol>
+{{end}}

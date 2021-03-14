@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<!--<p>hello {{.Name}}</p>-->
+<!--<p>hello {{.Gender}}</p>-->
+<!--<p>hello {{.Age}}</p>-->
+<p>hello {{.u1.Name}}</p>
+<p>hello {{.u1.Gender}}</p>
+<p>hello {{.u1.Age}}</p>
+---------------
+<p>hello {{.m1.name}}</p>
+<p>hello {{.m1.gender}}</p>
+<p>hello {{.m1.age}}</p>
+<hr/>
+<!--定义变量-->
+{{$v1 := 100}}
+{{$v1}}
+<hr/>
+{{$age := .m1.age}}
+{{$age}}
+<hr/>
+<!--去掉首尾空格-->
+{{- "a sda" -}}
+<hr/>
+{{- " sda" }}
+<hr/>
+{{ " sda " -}}
+<hr/>
+<!--条件判断-->
+{{ if $v1 }}
+if{{ $v1 }}
+{{ else }}
+啥都没有
+{{end}}
+<hr/>
+<!--预定函数、比较函数-->
+<!--lt 小于-->
+{{ if lt .m1.age 18}}
+上学
+{{else}}
+工作
+{{end}}
+
+<!--使用index函数取索引为2的值-->
+{{index .hobby 2}}
+<hr/>
+<!--遍历-->
+{{range $index,$hobby := .hobby}}
+<p>index:{{$index}}-{{$hobby}}</p>
+{{else}}
+<!--range的长度为0-->
+<P>没有爱好</p>
+{{end}}
+<hr/>
+<!--with 产生一个作用域-->
+<p>{{with .m1}}</p>
+<p>hello {{.name}}</p>
+<p>hello {{.gender}}</p>
+<p>hello {{.age}}</p>
+{{end}}
+<hr/>
+<hr/>
+<hr/>
+<hr/>
+<hr/>
+<hr/>
+<hr/>
+</body>
+</html>
