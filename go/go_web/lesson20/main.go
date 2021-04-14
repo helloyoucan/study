@@ -22,6 +22,7 @@ type UserInfo struct {
 	IgnoreMe int `gorm:"-"` //忽略字段
 	AnimalId  int64 `gorm:"column:beast_id"` //使用struct tag指定字段名
 }
+
 // 使用`AnimalID`作为主键
 type Animal struct {
 	AnimalID int64 `gorm:"primary_key"`
@@ -29,13 +30,14 @@ type Animal struct {
 	Age      int64
 }
 type User struct {
-	gorm.Model
+	
 } // 默认表名是 `users`
 // 将 User 的表名设置为 `profiles`
 // 唯一指定表名
-func (User) TableName() string { //不明白这里的写法
+func (User) TableName() string { //不明白这里的写法(User是个接收器，通过.CreateTable(&User{})绑定了)
 	return "profiles"
 }
+
 //表名默认就是结构体名称的复数
 func main() {
 	//连接数据库
