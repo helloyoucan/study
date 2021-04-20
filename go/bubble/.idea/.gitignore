@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 # Datasource local storage ignored files
-/../../../../../../:\Github\study\go\web04\.idea/dataSources/
+/../../../../../../../../:\Github\study\go\go_web\lesson26\bubble\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
